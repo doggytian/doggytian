@@ -45,6 +45,23 @@
 > 由 CppCommon 提供。📄 [中文文档](https://github.com/doggytian/CppTrader/blob/feature/lockfree-order-gateway/documents/LOCKFREE_ORDER_GATEWAY.zh-CN.md)
 > · [English](https://github.com/doggytian/CppTrader/blob/feature/lockfree-order-gateway/documents/LOCKFREE_ORDER_GATEWAY.md)
 
+#### 🗺️ [RoadLens — 车道级地理空间数据可视化与质检工作台](https://github.com/doggytian/RoadLens)
+
+一个完全自包含、可本地运行的 Web 工具，用于**车道级 / 道路级地理空间数据的可视化分析
+与质量检查**。数据全部来自公开来源（OpenStreetMap）或合成随机几何，依赖均为开源库，
+**不含任何专有代码、数据或内部服务**。
+
+- **可视化交互**：Leaflet 地图叠加 RoadCorridor / Lane / ReferenceLink，支持点选 / 框选、
+  属性面板、图层样式自定义与经纬度跳转
+- **8 类质检**：基于 `shapely` 实现走廊宽度、缓冲断裂、中心线覆盖、压盖、菱形拓扑、
+  几何有效性、参考绑定、参考拓扑，结果以 GeoJSON 分类着色叠加
+- **米制精度**：几何计算统一投影到以 tile 中心为原点的方位等距平面，公里级尺度误差极小
+- **工程化配套**：Flask + shapely + pyproj 后端，多用户工作区隔离、LRU 缓存与后台清理；
+  含单元测试 / GitHub Actions CI / Docker 容器化部署
+
+> 技术栈：Python · Flask · shapely · pyproj · Leaflet（原生 ES6，无前端框架）。
+> 📄 [README](https://github.com/doggytian/RoadLens/blob/main/README.md)
+
 ---
 
 ### 📊 GitHub Stats
