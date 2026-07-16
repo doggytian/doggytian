@@ -28,7 +28,22 @@
 
 ### 📌 精选项目
 
-> 下方 Pinned 仓库展示我的代表作品，欢迎交流。
+#### 🚀 [CppTrader — 无锁订单网关优化](https://github.com/doggytian/CppTrader/tree/feature/lockfree-order-gateway)
+
+在开源撮合引擎 [CppTrader](https://github.com/chronoxor/CppTrader) 上，设计并实现
+「网络线程 → 撮合线程」的**无锁 SPSC 交接前端**，对照 mutex + condition_variable
+基线做量化评测。
+
+- **无锁交接**：基于 SPSC 环形队列的单生产者-单消费者交接，替代锁 + 条件变量唤醒
+- **背压量化**：引入在途上限（in-flight limit）保持队列浅水位，测得的是纯 hand-off
+  开销而非排队延迟
+- **分位数分析**：逐命令采集 `dequeue_ts - enqueue_ts`，输出 min/mean/p50/p90/p99/p999/max
+- **实测**（12.6 万条命令）：p50 **23.75µs vs 231.7µs（≈9.8×）**，
+  p99 **53.9µs vs 774µs（≈14.4× 尾延迟改善）**，端到端 **≈9.6× 提速**
+
+> 我的贡献：对照基准设计 + 集成 + 背压量化 + 分位数分析；底层 `SPSCRingQueue`
+> 由 CppCommon 提供。📄 [中文文档](https://github.com/doggytian/CppTrader/blob/feature/lockfree-order-gateway/documents/LOCKFREE_ORDER_GATEWAY.zh-CN.md)
+> · [English](https://github.com/doggytian/CppTrader/blob/feature/lockfree-order-gateway/documents/LOCKFREE_ORDER_GATEWAY.md)
 
 ---
 
