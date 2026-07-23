@@ -28,24 +28,28 @@
 
 ### 📌 精选项目
 
-#### 🚀 [CppTrader — 无锁订单网关优化](https://github.com/doggytian/CppTrader/tree/feature/lockfree-order-gateway)
+#### ⚡ [MiniTrader — 从零实现的低延迟交易系统](https://github.com/doggytian/MiniTrader)
 
-在开源撮合引擎 [CppTrader](https://github.com/chronoxor/CppTrader) 上，设计并实现
-「网络线程 → 撮合线程」的**无锁 SPSC 交接前端**，对照 mutex + condition_variable
-基线做量化评测。
+[![CI](https://github.com/doggytian/MiniTrader/actions/workflows/ci.yml/badge.svg)](https://github.com/doggytian/MiniTrader/actions/workflows/ci.yml)
 
-- **无锁交接**：基于 SPSC 环形队列的单生产者-单消费者交接，替代锁 + 条件变量唤醒
-- **背压量化**：引入在途上限（in-flight limit）保持队列浅水位，测得的是纯 hand-off
-  开销而非排队延迟
-- **分位数分析**：逐命令采集 `dequeue_ts - enqueue_ts`，输出 min/mean/p50/p90/p99/p999/max
-- **实测**（12.6 万条命令）：p50 **23.75µs vs 231.7µs（≈9.8×）**，
-  p99 **53.9µs vs 774µs（≈14.4× 尾延迟改善）**，端到端 **≈9.6× 提速**
+用现代 C++20 从零构建的高性能撮合系统，完整实现从行情接收到策略决策到风控落单的全链路，
+专注于演示量化交易场景下的低延迟系统设计原则。
 
-> 我的贡献：对照基准设计 + 集成 + 背压量化 + 分位数分析；底层 `SPSCRingQueue`
-> 由 CppCommon 提供。📄 [中文文档](https://github.com/doggytian/CppTrader/blob/feature/lockfree-order-gateway/documents/LOCKFREE_ORDER_GATEWAY.zh-CN.md)
-> · [English](https://github.com/doggytian/CppTrader/blob/feature/lockfree-order-gateway/documents/LOCKFREE_ORDER_GATEWAY.md)
+- **Lock-free SPSC 队列**：`memory_order_acquire/release` 极简内存屏障，`std::byte[]`
+  替换 C++23 废弃的 `aligned_storage_t`，push/pop 往返 **2.1 ns**
+- **O(1) 撮合簿**：平坦数组按价格索引（无红黑树 pointer chasing），O(1) `cancel_order`
+  via `unordered_map<id → list::iterator>`，单级 add **43 ns**、cancel **24 ns**
+- **完整数据流**：`MarketTick → SPSCQueue → TradingEngine → RiskGate → OrderBook → FillCallback → Strategy`，稳态全路径 **65 ns**，含双边下单 **735 ns**
+- **做市策略 Demo**：`SpreadStrategy` 双边报价，成交后撤销对侧、自动重报；含自成交检测
+- **延迟分位数**（10 万次采样）：P50 **83 ns** · P90 **84 ns** · P99 **125 ns** · P99.9 **167 ns**
+- **工程化**：GitHub Actions CI（Ubuntu + macOS）、Google Benchmark、per-tick 延迟计时、一键脚本
+
+> 技术栈：C++20 · CMake · Google Test · Google Benchmark。
+> 📄 [README](https://github.com/doggytian/MiniTrader/blob/main/README.md)
 
 #### 🗺️ [RoadLens — 车道级地理空间数据可视化与质检工作台](https://github.com/doggytian/RoadLens)
+
+[![CI](https://github.com/doggytian/RoadLens/actions/workflows/ci.yml/badge.svg)](https://github.com/doggytian/RoadLens/actions/workflows/ci.yml)
 
 一个完全自包含、可本地运行的 Web 工具，用于**车道级 / 道路级地理空间数据的可视化分析
 与质量检查**。数据全部来自公开来源（OpenStreetMap）或合成随机几何，依赖均为开源库，
