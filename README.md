@@ -3,7 +3,7 @@
 **后台开发工程师** · 专注 **C++ / 高并发服务 / AI 编程工具链**
 
 - 🔭 日常：大规模在线服务的架构设计、性能优化与稳定性建设
-- 🌱 在学：LLM 推理优化（vLLM / KV Cache / PagedAttention）、AI Infra
+- 🌱 在学：内核旁路网络（DPDK / io_uring）、市场微结构与做市策略、tick-to-trade 延迟分解
 - 🛠️ 在折腾：Vibe Coding、AI Agent Skill 的开发与发布
 - 💬 可以聊：C++ 高并发、缓存架构、服务降本提效、AI 辅助开发
 - 📫 联系我：xingyutian2023@163.com
